@@ -158,7 +158,7 @@ namespace EnglischAbfrage
 
         private async void FocusEmptyOrFalseElement()
         {
-            await Task.Run(()=> Thread.Sleep(200));
+            await Task.Run(()=> Thread.Sleep(100));
             foreach (UIElement answer in antwortBox.Items)
             {
                 if (!((TextBox)answer).IsReadOnly)
