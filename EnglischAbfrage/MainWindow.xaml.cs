@@ -85,7 +85,7 @@ namespace EnglischAbfrage
             }
             else
             {
-                MessageBox.Show("Ende");
+                skipBtn.IsEnabled = false;
             }
         }
         private void NeueFrageCSV()
@@ -169,15 +169,22 @@ namespace EnglischAbfrage
             }
         }
 
-        private void skipBtn_Click(object sender, RoutedEventArgs e)
+        private async void skipBtn_Click(object sender, RoutedEventArgs e)
         {
             string antwort = string.Empty;
             foreach (string s in aufgabe.GetAntwort())
             {
                 antwort += "\n" + s;
             }
-            MessageBox.Show("Antwort:\n" + antwort);
-            //aufgabe.Reset(); Vllt später wieder hinzufügen, wenn man eine Liste mit "Fehlern" macht oder so
+            List<string> loesungen = aufgabe.GetAlleAntworten();
+            for (int i = 0; i < loesungen.Count; i++)
+            {
+                ((TextBox)antwortBox.Items[i]).IsReadOnly = true;
+                ((TextBox)antwortBox.Items[i]).TextChanged -= CheckInput;
+                ((TextBox)antwortBox.Items[i]).Text = loesungen[i];
+            }
+            await Task.Run(()=>Thread.Sleep(2000));
+            aufgabe.Reset();
             NeueFrageDB();
         }
         private void UpdateProgressbar()
