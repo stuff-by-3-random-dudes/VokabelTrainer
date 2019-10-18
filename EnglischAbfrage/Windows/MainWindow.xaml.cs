@@ -22,9 +22,9 @@ namespace EnglischAbfrage
     public partial class MainWindow : Window
     {
         private string path = "daten.csv";
-        private List<Aufgabe> aufgaben = new List<Aufgabe>();
+        private List<Aufgabe_VOK> aufgaben = new List<Aufgabe_VOK>();
         private List<int> ausstehendId = new List<int>();
-        private Aufgabe aufgabe = null;
+        private Aufgabe_VOK aufgabe = null;
         private Random random = new Random();
         private double incval = 0.0;
         private bool notchecked = false;
@@ -47,6 +47,22 @@ namespace EnglischAbfrage
                 System.Windows.Application.Current.Shutdown();
             }
         }
+        public MainWindow(int KapitelID)
+        {
+            try
+            {
+                //To-Do Aufgaben usw mit KapitelID nutzen.
+                InitializeComponent();
+                SetupAufgabenDB();
+                NeueFrageDB();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Fehler aufgetretetn, bitte an Entwickler wenden, falls sich das Prolem nicht von selbst löst.\n{ex.Message}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Application.Current.Shutdown();
+            }
+        }
         private void SetupAufgabenCSV()
         {
             List<String[]> daten = new PersistenzCsv(path, ';').AllRowValues();
@@ -55,7 +71,7 @@ namespace EnglischAbfrage
                 string frage = daten[i][0];
                 var antworten = daten[i].ToList<string>();
                 antworten.RemoveAt(0);
-                aufgaben.Add(new Aufgabe(frage, antworten));
+                aufgaben.Add(new Aufgabe_VOK(frage, antworten));
             }
         }
         private void SetupAufgabenDB()
@@ -192,6 +208,13 @@ namespace EnglischAbfrage
             //in initialisieren maxvalue setzten und hier value = ausstehend.count
             progBar.Value += incval;
             //progBar.Value = progBar.Maximum - ausstehendId.Count;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            TypeWindow tw = new TypeWindow();
+            tw.Show();
+            
         }
     }
     
