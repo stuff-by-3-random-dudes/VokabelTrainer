@@ -177,7 +177,7 @@ namespace EnglischAbfrage
                 antwort += "\n" + s;
             }
             MessageBox.Show("Antwort:\n" + antwort);
-            aufgabe.Reset();
+            //aufgabe.Reset(); Vllt später wieder hinzufügen, wenn man eine Liste mit "Fehlern" macht oder so
             NeueFrageDB();
         }
         private void UpdateProgressbar()
