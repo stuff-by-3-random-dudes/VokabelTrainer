@@ -64,7 +64,7 @@ namespace EnglischAbfrage
             incval = progBar.Maximum / ausstehendId.Count();
             //progBar.Maximum = ausstehendId.Count;
         }
-        private void NeueFrageDB()
+        private async void NeueFrageDB()
         {
             if (ausstehendId.Count > 0)
             {
@@ -76,7 +76,7 @@ namespace EnglischAbfrage
                 {
                     notchecked = true;
                 }
-                aufgabe = PersistenzDB.GetVokabeln(ausstehendId);
+                aufgabe = await PersistenzDB.GetVokabeln(ausstehendId);
                 SetupEmptyInputFields(aufgabe.GetAnzahlAntworten());
                 frageBox.Text = aufgabe.GetFrage();
                 
@@ -177,7 +177,7 @@ namespace EnglischAbfrage
                 antwort += "\n" + s;
             }
             MessageBox.Show("Antwort:\n" + antwort);
-            aufgabe.Reset();
+            //aufgabe.Reset(); Vllt später wieder hinzufügen, wenn man eine Liste mit "Fehlern" macht oder so
             NeueFrageDB();
         }
         private void UpdateProgressbar()
