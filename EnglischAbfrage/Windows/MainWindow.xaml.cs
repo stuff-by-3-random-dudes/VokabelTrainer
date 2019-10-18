@@ -199,7 +199,7 @@ namespace EnglischAbfrage
                 ((TextBox)antwortBox.Items[i]).TextChanged -= CheckInput;
                 ((TextBox)antwortBox.Items[i]).Text = loesungen[i];
             }
-            await Task.Run(() => Thread.Sleep(2000));
+            await Task.Run(()=>Thread.Sleep(2000));
             aufgabe.Reset();
             NeueFrageDB();
         }
