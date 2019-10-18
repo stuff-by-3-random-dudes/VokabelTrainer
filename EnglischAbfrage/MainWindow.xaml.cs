@@ -64,7 +64,7 @@ namespace EnglischAbfrage
             incval = progBar.Maximum / ausstehendId.Count();
             //progBar.Maximum = ausstehendId.Count;
         }
-        private void NeueFrageDB()
+        private async void NeueFrageDB()
         {
             if (ausstehendId.Count > 0)
             {
@@ -76,7 +76,7 @@ namespace EnglischAbfrage
                 {
                     notchecked = true;
                 }
-                aufgabe = PersistenzDB.GetVokabeln(ausstehendId);
+                aufgabe = await PersistenzDB.GetVokabeln(ausstehendId);
                 SetupEmptyInputFields(aufgabe.GetAnzahlAntworten());
                 frageBox.Text = aufgabe.GetFrage();
                 
@@ -158,7 +158,7 @@ namespace EnglischAbfrage
 
         private async void FocusEmptyOrFalseElement()
         {
-            await Task.Run(()=> Thread.Sleep(100));
+            await Task.Run(()=> Thread.Sleep(200));
             foreach (UIElement answer in antwortBox.Items)
             {
                 if (!((TextBox)answer).IsReadOnly)

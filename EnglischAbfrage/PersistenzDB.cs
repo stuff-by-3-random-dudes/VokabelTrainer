@@ -15,13 +15,13 @@ namespace EnglischAbfrage
 
               var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();*/
               // string = Deutsches wort, List<string> = Englische Wörter
-       public static Aufgabe GetVokabeln(List<int> ids)
+       public async static Task<Aufgabe> GetVokabeln(List<int> ids)
         {
             var id = RandomID(ids);
             var deutsch = string.Empty;
             List<string> englisch = new List<string>();
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://vokabelapi.azurewebsites.net/api/de_vok/deutschvok?vok=" + id);
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            var httpResponse = (HttpWebResponse) (await httpWebRequest.GetResponseAsync());
 
             
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -30,7 +30,7 @@ namespace EnglischAbfrage
                 deutsch = FixResponse(result);
             }
             httpWebRequest = (HttpWebRequest)WebRequest.Create("https://vokabelapi.azurewebsites.net/api/en_vok/englischvok?vok=" + id);
-            httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            httpResponse = (HttpWebResponse) (await httpWebRequest.GetResponseAsync());
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
                 var result = streamReader.ReadToEnd();
