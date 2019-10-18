@@ -15,7 +15,11 @@ namespace EnglischAbfrage
 
               var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();*/
               // string = Deutsches wort, List<string> = Englische Wörter
+<<<<<<< Updated upstream:EnglischAbfrage/PersistenzDB.cs
        public static Aufgabe GetVokabeln(List<int> ids)
+=======
+       public async static Task<Aufgabe_VOK> GetVokabeln(List<int> ids)
+>>>>>>> Stashed changes:EnglischAbfrage/Klassen/Persistenz/PersistenzDB.cs
         {
             var id = RandomID(ids);
             var deutsch = string.Empty;
@@ -41,7 +45,7 @@ namespace EnglischAbfrage
                 }
             }
 
-            return new Aufgabe(deutsch,englisch, id);
+            return new Aufgabe_VOK(deutsch,englisch, id);
         }
 
         private static string FixResponse(string response)

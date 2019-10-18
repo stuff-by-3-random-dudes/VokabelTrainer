@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EnglischAbfrage
 {
-    class Aufgabe
+    class Aufgabe_VOK
     {
         private string frage;
         private List<string> antwort;
@@ -15,14 +15,14 @@ namespace EnglischAbfrage
         private List<string> beantwortet = new List<string>();
         public bool Richtig { get; set; } = false;
 
-        public Aufgabe(string frage, List<string> antwort)
+        public Aufgabe_VOK(string frage, List<string> antwort)
         {
             this.frage = frage;
             this.antwort = antwort;
             //aBackup = new string[antwort.Count];
             //antwort.CopyTo(aBackup);
         }
-        public Aufgabe(string frage, List<string> antwort, int id)
+        public Aufgabe_VOK(string frage, List<string> antwort, int id)
         {
             this.frage = frage;
             this.antwort = antwort;
