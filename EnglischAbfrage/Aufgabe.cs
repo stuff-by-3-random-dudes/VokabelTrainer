@@ -38,6 +38,13 @@ namespace EnglischAbfrage
         {
             return antwort;
         }
+        public List<string> GetAlleAntworten()
+        {
+            List<string> alleaw = new List<string>();
+            beantwortet.ForEach(item => { alleaw.Add(item); });
+            antwort.ForEach(item => { alleaw.Add(item); });
+            return alleaw;
+        }
         public List<string> GetBeantwortet()
         {
             return beantwortet;
