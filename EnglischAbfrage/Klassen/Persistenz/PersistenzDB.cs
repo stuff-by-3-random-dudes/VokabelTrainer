@@ -11,15 +11,11 @@ namespace EnglischAbfrage
     class PersistenzDB
     {
         static Random rdm = new Random();
-        /*var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://reeeapi20191013024943.azurewebsites.net/api/login/login?username=" + UNE.Text+"&email="+UNE.Text+"&password="+PW.Password);
 
-              var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();*/
               // string = Deutsches wort, List<string> = Englische Wörter
-<<<<<<< Updated upstream:EnglischAbfrage/PersistenzDB.cs
-       public static Aufgabe GetVokabeln(List<int> ids)
-=======
+
+
        public async static Task<Aufgabe_VOK> GetVokabeln(List<int> ids)
->>>>>>> Stashed changes:EnglischAbfrage/Klassen/Persistenz/PersistenzDB.cs
         {
             var id = RandomID(ids);
             var deutsch = string.Empty;
