@@ -49,13 +49,6 @@ namespace EnglischAbfrage
         {
             return beantwortet;
         }
-        public List<string> GetAlleAntworten()
-        {
-            List<string> alleaw = new List<string>();
-            beantwortet.ForEach(item => { alleaw.Add(item); });
-            antwort.ForEach(item => { alleaw.Add(item); });
-            return alleaw;
-        }
         public bool AllesGefragt()
         {
             bool allesGefragt = false;
