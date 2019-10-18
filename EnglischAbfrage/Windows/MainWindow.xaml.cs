@@ -80,7 +80,7 @@ namespace EnglischAbfrage
             incval = progBar.Maximum / ausstehendId.Count();
             //progBar.Maximum = ausstehendId.Count;
         }
-        private void NeueFrageDB()
+        private async void NeueFrageDB()
         {
             if (ausstehendId.Count > 0)
             {
@@ -92,7 +92,7 @@ namespace EnglischAbfrage
                 {
                     notchecked = true;
                 }
-                aufgabe = PersistenzDB.GetVokabeln(ausstehendId);
+                aufgabe = await PersistenzDB.GetVokabeln(ausstehendId);
                 SetupEmptyInputFields(aufgabe.GetAnzahlAntworten());
                 frageBox.Text = aufgabe.GetFrage();
                 
@@ -101,7 +101,7 @@ namespace EnglischAbfrage
             }
             else
             {
-                MessageBox.Show("Ende");
+                skipBtn.IsEnabled = false;
             }
         }
         private void NeueFrageCSV()
@@ -185,14 +185,21 @@ namespace EnglischAbfrage
             }
         }
 
-        private void skipBtn_Click(object sender, RoutedEventArgs e)
+        private async void skipBtn_Click(object sender, RoutedEventArgs e)
         {
             string antwort = string.Empty;
             foreach (string s in aufgabe.GetAntwort())
             {
                 antwort += "\n" + s;
             }
-            MessageBox.Show("Antwort:\n" + antwort);
+            List<string> loesungen = aufgabe.GetAlleAntworten();
+            for (int i = 0; i < loesungen.Count; i++)
+            {
+                ((TextBox)antwortBox.Items[i]).IsReadOnly = true;
+                ((TextBox)antwortBox.Items[i]).TextChanged -= CheckInput;
+                ((TextBox)antwortBox.Items[i]).Text = loesungen[i];
+            }
+            await Task.Run(() => Thread.Sleep(2000));
             aufgabe.Reset();
             NeueFrageDB();
         }
