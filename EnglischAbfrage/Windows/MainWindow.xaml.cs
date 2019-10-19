@@ -22,6 +22,7 @@ namespace EnglischAbfrage
     public partial class MainWindow : Window
     {
         private string path = "daten.csv";
+        private int KID { get; set; }
         private List<Aufgabe_VOK> aufgaben = new List<Aufgabe_VOK>();
         private List<int> ausstehendId = new List<int>();
         private Aufgabe_VOK aufgabe = null;
@@ -51,9 +52,10 @@ namespace EnglischAbfrage
         {
             try
             {
+                KID = KapitelID;
                 //To-Do Aufgaben usw mit KapitelID nutzen.
                 InitializeComponent();
-                SetupAufgabenDB();
+                SetupAufgabenDB(KapitelID);
                 NeueFrageDB();
 
             }
@@ -80,6 +82,13 @@ namespace EnglischAbfrage
             incval = progBar.Maximum / ausstehendId.Count();
             //progBar.Maximum = ausstehendId.Count;
         }
+        private void SetupAufgabenDB(int kapitel)
+        {
+            
+            ausstehendId = PersistenzDB.GetIdList(kapitel);
+            incval = progBar.Maximum / ausstehendId.Count();
+            
+        }
         private async void NeueFrageDB()
         {
             if (ausstehendId.Count > 0)
@@ -92,7 +101,7 @@ namespace EnglischAbfrage
                 {
                     notchecked = true;
                 }
-                aufgabe = await PersistenzDB.GetVokabeln(ausstehendId);
+                aufgabe = await PersistenzDB.GetVokabeln(ausstehendId, KID);
                 SetupEmptyInputFields(aufgabe.GetAnzahlAntworten());
                 frageBox.Text = aufgabe.GetFrage();
                 
@@ -212,8 +221,6 @@ namespace EnglischAbfrage
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            TypeWindow tw = new TypeWindow();
-            tw.Show();
             
         }
     }
