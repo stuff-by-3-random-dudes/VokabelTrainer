@@ -29,7 +29,7 @@ namespace EnglischAbfrage
         }
         private void Vokabel_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mw = new MainWindow(KapitelID);
+            MainWindow mw = new MainWindow(2);
             mw.Show();
             this.Close();
         }
