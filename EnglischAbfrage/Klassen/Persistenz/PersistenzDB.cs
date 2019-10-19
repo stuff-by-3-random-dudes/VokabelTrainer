@@ -13,10 +13,30 @@ namespace EnglischAbfrage
         static Random rdm = new Random();
 
               // string = Deutsches wort, List<string> = Englische Wörter
+        public async static Task<Tuple<List<int>,List<string>>> GetKapitel()
+        {
+            List<int> ids = new List<int>();
+            List<string> names = new List<string>();
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://vokabelapi.azurewebsites.net/api/kapitel/kapitel");
+            var httpResponse = (HttpWebResponse)(await httpWebRequest.GetResponseAsync());
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                var resfix = FixResponse(result);
+                // keine ahnung ob des mit einem kapitel funktioniert, wir werden es nie erfahren
+                var kapsplit = resfix.Split('|');
+                foreach(string s in kapsplit)
+                {
+                    var splitkap = s.Split(';');
+                    ids.Add(Convert.ToInt32(splitkap[0]));
+                    names.Add(splitkap[1]);
+                }
+            }
+            return new Tuple<List<int>, List<string>>(ids, names);
+        }
 
 
-
-       public async static Task<Aufgabe_VOK> GetVokabeln(List<int> ids, int kap)
+        public async static Task<Aufgabe_VOK> GetVokabeln(List<int> ids, int kap)
         {
             var id = RandomID(ids);
             var deutsch = string.Empty;
@@ -118,7 +138,7 @@ namespace EnglischAbfrage
             List<int> ids = new List<int>();
             int anz = 0;
             //Id anzahl über api bekommen
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://vokabelapi.azurewebsites.net/api/anz_vok/anzvokkap?kapt=2");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://vokabelapi.azurewebsites.net/api/anz_vok/anzvokkap?kapt="+Kapitel);
             var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
 
             //api antwort in anzahl umwandeln

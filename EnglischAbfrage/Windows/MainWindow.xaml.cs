@@ -221,8 +221,6 @@ namespace EnglischAbfrage
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            TypeWindow tw = new TypeWindow();
-            tw.Show();
             
         }
     }

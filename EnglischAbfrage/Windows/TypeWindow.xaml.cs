@@ -29,29 +29,38 @@ namespace EnglischAbfrage
         }
         private void Vokabel_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mw = new MainWindow(2);
-            mw.Show();
-            this.Close();
+            MainWindow mw = new MainWindow(KapitelID);
+            this.Visibility = Visibility.Hidden;
+            mw.ShowDialog();
+            this.Visibility = Visibility.Visible;
         }
 
         private void Synonym_Click(object sender, RoutedEventArgs e)
         {
             SYNWindow sw = new SYNWindow(KapitelID);
-            sw.Show();
-            this.Close();
+            this.Visibility = Visibility.Hidden;
+            sw.ShowDialog();
+            this.Visibility = Visibility.Visible;
         }
 
         private void Gegenteil_Click(object sender, RoutedEventArgs e)
         {
             OPPWindow ow = new OPPWindow(KapitelID);
-            ow.Show();
-            this.Close();
+            this.Visibility = Visibility.Hidden;
+            ow.ShowDialog();
+            this.Visibility = Visibility.Visible;
         }
 
         private void Kapitel_Click(object sender, RoutedEventArgs e)
         {
-            //To-Do: Kapitel auswahl erstellen
+            
             this.Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            EnglischAbfrage.Windows.KapitelWindow kapitelWindow = new Windows.KapitelWindow();
+            kapitelWindow.Show();
         }
     }
 }
