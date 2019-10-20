@@ -72,6 +72,7 @@ namespace EnglischAbfrage
         }
         private async void NeueFrageDB()
         {
+            var index = 0;
             if (aufgaben.Count > 0)
             {
                 if(allval.IsChecked == true)
@@ -85,7 +86,12 @@ namespace EnglischAbfrage
                 //aufgabe = await PersistenzDB.GetVokabeln(PersistenzDB.GetIdList(KID),KID);
                 //aufgabe = await PersistenzDB.GetVokabeln(ausstehendId, KID);
                 await Task.Run(() => Thread.Sleep(350));
-                aufgabe = aufgaben[random.Next(0, aufgaben.Count)];
+               
+                do
+                {
+                    index = random.Next(0, aufgaben.Count);
+                } while (index == aufgaben.IndexOf(aufgabe) && aufgaben.Count > 1);
+                aufgabe = aufgaben[index];
                 SetupEmptyInputFields(aufgabe.GetAnzahlAntworten());
                 frageBox.Text = aufgabe.GetFrage();
                 
@@ -147,7 +153,7 @@ namespace EnglischAbfrage
                 {
                     ((TextBox)sender).IsReadOnly = true;
                     ((TextBox)sender).Background = Brushes.LightGreen;//yellowgreen
-                    FocusEmptyOrFalseElement();
+                    
                     if (aufgabe.AllesGefragt() || notchecked)
                     {
 
@@ -156,6 +162,10 @@ namespace EnglischAbfrage
                         aufgaben.Remove(aufgabe);
                         UpdateProgressbar();
                         NeueFrageDB();
+                    }
+                    else
+                    {
+                        FocusEmptyOrFalseElement();
                     }
                 }
             }
@@ -192,6 +202,7 @@ namespace EnglischAbfrage
                 ((TextBox)antwortBox.Items[i]).IsReadOnly = true;
                 ((TextBox)antwortBox.Items[i]).TextChanged -= CheckInput;
                 ((TextBox)antwortBox.Items[i]).Text = loesungen[i];
+                
             }
             await Task.Run(()=>Thread.Sleep(2000));
             aufgabe.Reset();
