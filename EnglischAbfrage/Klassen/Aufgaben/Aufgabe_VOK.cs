@@ -64,7 +64,7 @@ namespace EnglischAbfrage
             string remove = string.Empty;
             foreach (string aw in antwort)
             {
-                if (eingabe.Trim() == aw || eingabe.Trim() == aw.Trim())
+                if (eingabe.Trim() == aw.Trim() || RemoveTo(aw) == RemoveTo(eingabe) && RemoveTo(aw) != aw)
                 {
                     richtig = true;
                     remove = aw;
@@ -76,6 +76,21 @@ namespace EnglischAbfrage
                 beantwortet.Add(remove);
             }
             this.Richtig = richtig;
+        }
+        private string RemoveTo(string text)
+        {
+            //wenn aw verb ist, ignoriere to in eingabe
+            //wenn aw kein verb ist, ignoriere to nicht in eingabe
+            string[] signatur = { "to ", "(to) " };
+            text = text.Trim();
+            foreach (string s in signatur)
+            {
+                if (text.Length > s.Length && text.StartsWith(s))
+                {
+                    text = text.Substring(s.Length, text.Length - s.Length);
+                }
+            }
+            return text;
         }
         public void Reset()
         {

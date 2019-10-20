@@ -30,25 +30,25 @@ namespace EnglischAbfrage
         private void Vokabel_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mw = new MainWindow(KapitelID);
-            this.Visibility = Visibility.Hidden;
-            mw.ShowDialog();
-            this.Visibility = Visibility.Visible;
+
+            mw.Show();
+            this.Close();
         }
 
         private void Synonym_Click(object sender, RoutedEventArgs e)
         {
             SYNWindow sw = new SYNWindow(KapitelID);
-            this.Visibility = Visibility.Hidden;
-            sw.ShowDialog();
-            this.Visibility = Visibility.Visible;
+
+            sw.Show();
+            this.Close();
         }
 
         private void Gegenteil_Click(object sender, RoutedEventArgs e)
         {
             OPPWindow ow = new OPPWindow(KapitelID);
-            this.Visibility = Visibility.Hidden;
-            ow.ShowDialog();
-            this.Visibility = Visibility.Visible;
+
+            ow.Show();
+            this.Close();
         }
 
         private void Kapitel_Click(object sender, RoutedEventArgs e)
@@ -59,8 +59,7 @@ namespace EnglischAbfrage
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            EnglischAbfrage.Windows.KapitelWindow kapitelWindow = new Windows.KapitelWindow();
-            kapitelWindow.Show();
+            
         }
     }
 }

@@ -34,12 +34,12 @@ namespace EnglischAbfrage
         {
             try
             {
-                
+                this.Visibility = Visibility.Collapsed;
                 InitializeComponent();
-                SetupAufgabenDB();
+                //SetupAufgabenDB();
                 //SetupAufgabenCSV();
                 //NeueFrageCSV();
-                NeueFrageDB();
+                //NeueFrageDB();
 
             }
             catch (Exception ex)
@@ -50,20 +50,10 @@ namespace EnglischAbfrage
         }
         public MainWindow(int KapitelID)
         {
-            try
-            {
-                KID = KapitelID;
-                //To-Do Aufgaben usw mit KapitelID nutzen.
-                InitializeComponent();
-                SetupAufgabenDB(KapitelID);
-                NeueFrageDB();
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Fehler aufgetretetn, bitte an Entwickler wenden, falls sich das Prolem nicht von selbst löst.\n{ex.Message}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
-                System.Windows.Application.Current.Shutdown();
-            }
+           
+            KID = KapitelID;
+            InitializeComponent();
+           
         }
         private void SetupAufgabenCSV()
         {
@@ -76,22 +66,14 @@ namespace EnglischAbfrage
                 aufgaben.Add(new Aufgabe_VOK(frage, antworten));
             }
         }
-        private void SetupAufgabenDB()
-        {
-            ausstehendId = PersistenzDB.GetIdList();
-            incval = progBar.Maximum / ausstehendId.Count();
-            //progBar.Maximum = ausstehendId.Count;
-        }
         private void SetupAufgabenDB(int kapitel)
         {
-            
             ausstehendId = PersistenzDB.GetIdList(kapitel);
-            incval = progBar.Maximum / ausstehendId.Count();
-            
         }
         private async void NeueFrageDB()
         {
-            if (ausstehendId.Count > 0)
+            var index = 0;
+            if (aufgaben.Count > 0)
             {
                 if(allval.IsChecked == true)
                 {
@@ -101,7 +83,15 @@ namespace EnglischAbfrage
                 {
                     notchecked = true;
                 }
-                aufgabe = await PersistenzDB.GetVokabeln(ausstehendId, KID);
+                //aufgabe = await PersistenzDB.GetVokabeln(PersistenzDB.GetIdList(KID),KID);
+                //aufgabe = await PersistenzDB.GetVokabeln(ausstehendId, KID);
+                await Task.Run(() => Thread.Sleep(350));
+               
+                do
+                {
+                    index = random.Next(0, aufgaben.Count);
+                } while (index == aufgaben.IndexOf(aufgabe) && aufgaben.Count > 1);
+                aufgabe = aufgaben[index];
                 SetupEmptyInputFields(aufgabe.GetAnzahlAntworten());
                 frageBox.Text = aufgabe.GetFrage();
                 
@@ -163,14 +153,19 @@ namespace EnglischAbfrage
                 {
                     ((TextBox)sender).IsReadOnly = true;
                     ((TextBox)sender).Background = Brushes.LightGreen;//yellowgreen
-                    FocusEmptyOrFalseElement();
+                    
                     if (aufgabe.AllesGefragt() || notchecked)
                     {
-                        
+
                         //aufgaben.Remove(aufgabe);
-                        ausstehendId.Remove(aufgabe.CurrentID);
+                        // ausstehendId.Remove(aufgabe.CurrentID);
+                        aufgaben.Remove(aufgabe);
                         UpdateProgressbar();
                         NeueFrageDB();
+                    }
+                    else
+                    {
+                        FocusEmptyOrFalseElement();
                     }
                 }
             }
@@ -207,6 +202,7 @@ namespace EnglischAbfrage
                 ((TextBox)antwortBox.Items[i]).IsReadOnly = true;
                 ((TextBox)antwortBox.Items[i]).TextChanged -= CheckInput;
                 ((TextBox)antwortBox.Items[i]).Text = loesungen[i];
+                
             }
             await Task.Run(()=>Thread.Sleep(2000));
             aufgabe.Reset();
@@ -222,6 +218,40 @@ namespace EnglischAbfrage
         private void Window_Closed(object sender, EventArgs e)
         {
             
+        }
+
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
+            try
+            {
+                
+                ///await methode hier => sobald diese fertig ist ist dieses fenster sichtbar
+                ///meanwhile ladefenster
+                aufgaben = await PersistenzDB.GetVokabeln(PersistenzDB.GetIdList(KID), KID);
+                incval = progBar.Maximum / aufgaben.Count();
+                NeueFrageDB();
+                await Task.Run(() => Thread.Sleep(500));
+                this.Visibility = Visibility.Visible;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Fehler aufgetretetn, bitte an Entwickler wenden, falls sich das Prolem nicht von selbst löst.\n{ex.Message}", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.Application.Current.Shutdown();
+            }
+            
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            EnglischAbfrage.Windows.KapitelWindow kapitelWindow = new Windows.KapitelWindow();
+            kapitelWindow.Show();
+        }
+
+        private void Window_Loaded(object sender, EventArgs e)
+        {
+
         }
     }
     
