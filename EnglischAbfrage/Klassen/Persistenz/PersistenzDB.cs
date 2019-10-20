@@ -36,36 +36,43 @@ namespace EnglischAbfrage
         }
 
 
-        public async static Task<Aufgabe_VOK> GetVokabeln(List<int> ids, int kap)
+        public async static Task<List<Aufgabe_VOK>> GetVokabeln(List<int> ids, int kap)
         {
-            var id = RandomID(ids);
-            var deutsch = string.Empty;
-            var id2 = string.Empty;
-            List<string> englisch = new List<string>();
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://vokabelapi.azurewebsites.net/api/de_vok/deutschvokkap?vok=" + id+"&kap="+kap);
-            var httpResponse = (HttpWebResponse) (await httpWebRequest.GetResponseAsync());
-
+            List<Aufgabe_VOK> retval = new List<Aufgabe_VOK>();
             
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            foreach(int id in ids)
             {
-                var result = streamReader.ReadToEnd();
-                var resfix = FixResponse(result);
-                deutsch = resfix.Split(',')[1];
-                id2 = resfix.Split(',')[0];
-            }
-            httpWebRequest = (HttpWebRequest)WebRequest.Create("https://vokabelapi.azurewebsites.net/api/en_vok/englischvok?vok=" + id2);
-            httpResponse = (HttpWebResponse) (await httpWebRequest.GetResponseAsync());
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-                var fixr = FixResponse(result).Split(';');
-                foreach(string s in fixr)
-                {
-                    englisch.Add(s);
-                }
-            }
+                var deutsch = string.Empty;
+                var id2 = string.Empty;
+                List<string> englisch = new List<string>();
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://vokabelapi.azurewebsites.net/api/de_vok/deutschvokkap?vok=" + id + "&kap=" + kap);
+                var httpResponse = (HttpWebResponse)(await httpWebRequest.GetResponseAsync());
 
-            return new Aufgabe_VOK(deutsch,englisch, id);
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    var resfix = FixResponse(result);
+                    deutsch = resfix.Split(',')[1];
+                    id2 = resfix.Split(',')[0];
+                }
+                httpWebRequest = (HttpWebRequest)WebRequest.Create("https://vokabelapi.azurewebsites.net/api/en_vok/englischvok?vok=" + id2);
+                httpResponse = (HttpWebResponse)(await httpWebRequest.GetResponseAsync());
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    var fixr = FixResponse(result).Split(';');
+                    foreach (string s in fixr)
+                    {
+                        englisch.Add(s);
+                    }
+                }
+                retval.Add(new Aufgabe_VOK(deutsch, englisch, id));
+            }
+            
+
+            //return new Aufgabe_VOK(deutsch,englisch, id);
+            return retval;
         }
         public async static Task<Aufgabe_VOK> GetVokabeln(List<int> ids)
         {
