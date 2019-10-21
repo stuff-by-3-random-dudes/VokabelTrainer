@@ -225,13 +225,16 @@ namespace EnglischAbfrage
             this.Visibility = Visibility.Hidden;
             try
             {
-                
+
                 ///await methode hier => sobald diese fertig ist ist dieses fenster sichtbar
                 ///meanwhile ladefenster
+                Windows.LoadingWindow lw = new Windows.LoadingWindow();
+                lw.Show();
                 aufgaben = await PersistenzDB.GetVokabeln(PersistenzDB.GetIdList(KID), KID);
                 incval = progBar.Maximum / aufgaben.Count();
                 NeueFrageDB();
                 await Task.Run(() => Thread.Sleep(500));
+                lw.Close();
                 this.Visibility = Visibility.Visible;
 
             }

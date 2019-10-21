@@ -1,0 +1,14 @@
+﻿<Window x:Class="EnglischAbfrage.Windows.LoadingWindow"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local1="clr-namespace:EnglischAbfrage.UserControls"
+        mc:Ignorable="d"
+        Title="Loading" Height="152" Width="300" WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <local1:Spinner EllipseSize="12"  HorizontalAlignment="Center" Height ="50" Width="50" VerticalAlignment="Center" Margin="117,10,125,59"/>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="39,0,38,16" TextWrapping="Wrap" Text="Lade Vokabeln herunter" FontSize="18" Width="215" TextAlignment="Center"/>
+
+    </Grid>
+</Window>

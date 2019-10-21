@@ -57,8 +57,14 @@
     </ApplicationDefinition>
     <Compile Include="Klassen\Aufgaben\Aufgabe_OPP.cs" />
     <Compile Include="Klassen\Aufgaben\Aufgabe_SYN.cs" />
+    <Compile Include="UserControls\Spinner.xaml.cs">
+      <DependentUpon>Spinner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\KapitelWindow.xaml.cs">
       <DependentUpon>KapitelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LoadingWindow.xaml.cs">
+      <DependentUpon>LoadingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\OPPWindow.xaml.cs">
       <DependentUpon>OPPWindow.xaml</DependentUpon>
@@ -69,7 +75,15 @@
     <Compile Include="Windows\TypeWindow.xaml.cs">
       <DependentUpon>TypeWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="UserControls\Spinner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\KapitelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\LoadingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

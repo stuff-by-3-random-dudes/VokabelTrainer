@@ -12,28 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace EnglischAbfrage
+namespace EnglischAbfrage.Windows
 {
     /// <summary>
-    /// Interaktionslogik für OPPWindow.xaml
+    /// Interaktionslogik für LoadingWindow.xaml
     /// </summary>
-    public partial class OPPWindow : Window
+    public partial class LoadingWindow : Window
     {
-        //To-Do: Alles hier drinnen
-        private int KapitelID { get; set; } = 0;
-        public OPPWindow()
+        public LoadingWindow()
         {
             InitializeComponent();
-        }
-        public OPPWindow(int kapitelID)
-        {
-            
-            KapitelID = kapitelID;
-            InitializeComponent();
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
         }
     }
 }
